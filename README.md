@@ -15,6 +15,7 @@ It's all in one file: `main.cpp`.
   - `goodFac(const string& fac)`: Checks if it's a valid faculty.
   - `goodStat(const string& stat)`: Checks if it's a valid status.
 - **Action Functions:**
+![Menu](screenshots/menu.png)
   - `add(vector<Student>& studs)`: Adds a new student.
   - `findById(const vector<Student>& studs, const string& id)`: Finds a student by ID (returns the index or -1 if not found).
   - `del(vector<Student>& studs)`: Deletes a student by ID.

@@ -47,11 +47,11 @@ void add(vector<Student>& studs) {
     cout << "New student:\n";
 
     cout << "ID: "; cin >> s.id;
-    cin.ignore(); 
+    cin.ignore();
     cout << "Name: "; getline(cin, s.name);
     cout << "DOB (dd/mm/yyyy): "; getline(cin, s.dob);
     cout << "Gender: "; getline(cin, s.gender);
-    
+
     do {
         cout << "Faculty (" ;
         for (int i = 0; i < facs.size(); ++i) {
@@ -124,7 +124,7 @@ void update(vector<Student>& studs) {
         cout << "Name: "; getline(cin, studs[i].name);
         cout << "DOB (dd/mm/yyyy): "; getline(cin, studs[i].dob);
         cout << "Gender: "; getline(cin, studs[i].gender);
-        
+
         do {
             cout << "Faculty (" ;
             for (int j = 0; j < facs.size(); ++j) {
@@ -136,7 +136,7 @@ void update(vector<Student>& studs) {
             cout << "): ";
             getline(cin, studs[i].fac);
         } while(!goodFac(studs[i].fac));
-        
+
         cout << "Course: "; getline(cin, studs[i].course);
         cout << "Program: "; getline(cin, studs[i].prog);
         cout << "Address: "; getline(cin, studs[i].addr);
@@ -150,7 +150,7 @@ void update(vector<Student>& studs) {
             cout << "Phone: ";
             getline(cin, studs[i].phone);
         } while (!goodPhone(studs[i].phone));
-        
+
         do {
             cout << "Status (" ;
             for (int j = 0; j < stats.size(); ++j) {
