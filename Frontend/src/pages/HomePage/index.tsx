@@ -4,6 +4,7 @@ import SearchBar from "../../components/SearchBar";
 import StudentForm from "../../components/StudentForm";
 import { Student } from "../../types";
 import axiosInstance from "../../api/config";
+import AboutDialogue from "../../components/AboutDialogue";
 
 const HomePage = () => {
   const [students, setStudents] = useState<Student[]>([]);
@@ -11,6 +12,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
   const [selectedStudent, setSelectStudent] = useState<Partial<Student>>({});
   const [isEdit, setIsEdit] = useState(false);
 
@@ -110,6 +112,12 @@ const HomePage = () => {
       >
         Add New Student
       </button>
+      <button
+        onClick={() => setShowAbout(true)}
+        className="mb-4 px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"
+      >
+        About App
+      </button>
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <StudentTable
         students={students}
@@ -124,6 +132,7 @@ const HomePage = () => {
           onClose={() => setShowForm(false)}
         />
       )}
+      {showAbout && <AboutDialogue onClose={() => setShowAbout(false)} />}
     </div>
   );
 };
