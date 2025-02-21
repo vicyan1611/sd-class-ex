@@ -10,7 +10,11 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const navigate = useNavigate();
   const [students, setStudents] = useState<Student[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState({
+    studentName: "",
+    studentId: "",
+    facultyName: "",
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -72,15 +76,27 @@ const HomePage = () => {
   };
 
   const searchStudents = async () => {
-    if (!searchQuery.trim()) {
+    if (
+      !searchQuery.studentName &&
+      !searchQuery.studentId &&
+      !searchQuery.facultyName
+    ) {
       fetchStudents();
       return;
     }
 
     try {
-      const response = await axiosInstance.get(
-        `/students/search?query=${searchQuery}`,
-      );
+      const params = new URLSearchParams({
+        ...(searchQuery.studentName && {
+          studentName: searchQuery.studentName,
+        }),
+        ...(searchQuery.studentId && { studentId: searchQuery.studentId }),
+        ...(searchQuery.facultyName && {
+          facultyName: searchQuery.facultyName,
+        }),
+      });
+
+      const response = await axiosInstance.get(`/students/search?${params}`);
       setStudents(response.data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");

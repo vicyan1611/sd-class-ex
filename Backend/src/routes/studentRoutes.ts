@@ -76,14 +76,36 @@ router.delete("/:id", async (req: Request, res: Response) => {
 // Search students
 router.get("/search", async (req: Request, res: Response) => {
   try {
-    const { query } = req.query;
+    const { studentName, studentId, facultyName } = req.query;
+    console.log(studentName, studentId, facultyName);
     const students = await Student.findAll({
       where: {
-        [Op.or]: [
-          { student_id: { [Op.iLike]: `%${query}%` } },
-          { full_name: { [Op.iLike]: `%${query}%` } },
-        ],
+        full_name: {
+          [Op.like]: `%${studentName ? studentName : ""}%`,
+        },
+        student_id: {
+          [Op.like]: `%${studentId ? studentId : ""}%`,
+        },
       },
+      include: [
+        {
+          model: Faculty,
+          attributes: ["faculty_name"],
+          where: {
+            faculty_name: {
+              [Op.like]: `%${facultyName ? facultyName : ""}%`,
+            },
+          },
+        },
+        {
+          model: Program,
+          attributes: ["program_name"],
+        },
+        {
+          model: Status,
+          attributes: ["status_name"],
+        },
+      ],
     });
     res.json(students);
   } catch (error) {
