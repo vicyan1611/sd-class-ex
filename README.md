@@ -44,6 +44,9 @@ Each category supports:
 - Import/export student data from CSV/JSON files
 ![Import/Export](screenshots/import-export.png)
 
+### Loging System
+- Log all backend system activities for auditing and troubleshooting
+
 ## Installation
 
 1. Install dependencies for both frontend and backend
