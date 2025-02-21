@@ -4,11 +4,13 @@ import facultiesRoutes from "./routes/facultyRoutes";
 import cors from "cors";
 import sequelize from "./config/database";
 import { initializeData } from "./seeders/initialData";
+import { requestLogger } from "./middleware/requestLogger";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+app.use(requestLogger);
 
 // Routes
 app.use("/api/students", studentRoutes);
