@@ -40,6 +40,10 @@ Each category supports:
 
 ![About Dialog](screenshots/about-dialog.png)
 
+### Import/Export Data
+- Import/export student data from CSV/JSON files
+![Import/Export](screenshots/import-export.png)
+
 ## Installation
 
 1. Install dependencies for both frontend and backend
