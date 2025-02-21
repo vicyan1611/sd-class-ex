@@ -21,8 +21,6 @@ router.get("/", async (req: Request, res: Response) => {
 // Add a new student
 router.post("/", async (req: Request, res: Response) => {
   try {
-    console.log("Creating new student");
-    console.log(req.body);
     const newStudent = await Student.create(req.body);
     res.status(201).json("Creating student successfully");
   } catch (error) {

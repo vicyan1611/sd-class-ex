@@ -49,11 +49,11 @@ const students = [
     date_of_birth: new Date("2002-05-15"),
     gender: "Nam",
     course_year: "2020",
-    program: "Cử nhân Luật",
+    program: "LAW_LLB",
     address: "123 Đường ABC, Quận 1, TP.HCM",
     email: "vanx@student.edu.vn",
     phone: "0987654321",
-    student_status: "Đang học",
+    student_status: "active",
   },
   {
     student_id: "2020002",
@@ -62,11 +62,11 @@ const students = [
     date_of_birth: new Date("2002-06-20"),
     gender: "Nữ",
     course_year: "2020",
-    program: "Cử nhân Tiếng Anh thương mại",
+    program: "ENG_BA",
     address: "456 Đường XYZ, Quận 2, TP.HCM",
     email: "thiy@student.edu.vn",
     phone: "0987654322",
-    student_status: "Đang học",
+    student_status: "active",
   },
   {
     student_id: "2019001",
@@ -75,11 +75,11 @@ const students = [
     date_of_birth: new Date("2001-03-10"),
     gender: "Nam",
     course_year: "2019",
-    program: "Cử nhân Tiếng Nhật",
+    program: "JAP_BA",
     address: "789 Đường DEF, Quận 3, TP.HCM",
     email: "vanz@student.edu.vn",
     phone: "0987654323",
-    student_status: "Đã tốt nghiệp",
+    student_status: "graduated",
   },
   {
     student_id: "2021001",
@@ -88,11 +88,11 @@ const students = [
     date_of_birth: new Date("2003-12-25"),
     gender: "Nữ",
     course_year: "2021",
-    program: "Cử nhân Tiếng Pháp",
+    program: "FRE_BA",
     address: "101 Đường GHI, Quận 4, TP.HCM",
     email: "thiw@student.edu.vn",
     phone: "0987654324",
-    student_status: "Đang học",
+    student_status: "active",
   },
 ];
 
@@ -111,27 +111,40 @@ const programs = [
     duration: "4 years",
     degree_type: "Bachelor",
   },
-  // Add more programs as needed
+  {
+    program_id: "JAP_BA",
+    program_name: "Cử nhân Tiếng Nhật",
+    description: "Chương trình đào tạo cử nhân Tiếng Nhật",
+    duration: "4 years",
+    degree_type: "Bachelor",
+  },
+  {
+    program_id: "FRE_BA",
+    program_name: "Cử nhân Tiếng Pháp",
+    description: "Chương trình đào tạo cử nhân Tiếng Pháp",
+    duration: "4 years",
+    degree_type: "Bachelor",
+  },
 ];
 
 const statuses = [
   {
-    status_id: "Đang học",
+    status_id: "active",
     status_name: "Đang học",
     description: "Sinh viên đang theo học",
   },
   {
-    status_id: "Đã tốt nghiệp",
+    status_id: "graduated",
     status_name: "Đã tốt nghiệp",
     description: "Sinh viên đã hoàn thành chương trình học",
   },
   {
-    status_id: "Đã thôi học",
+    status_id: "dropout",
     status_name: "Đã thôi học",
     description: "Sinh viên đã thôi học",
   },
   {
-    status_id: "Tạm dừng học",
+    status_id: "suspended",
     status_name: "Tạm dừng học",
     description: "Sinh viên tạm dừng học tập",
   },
