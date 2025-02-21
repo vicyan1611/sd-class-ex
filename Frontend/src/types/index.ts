@@ -11,3 +11,27 @@ export interface Student {
   phone: string;
   student_status: string;
 }
+
+export interface Faculty {
+  faculty_id: string;
+  faculty_name: string;
+  description?: string;
+  established_date?: Date;
+  dean_name?: string;
+  contact_email?: string;
+  contact_phone?: string;
+}
+
+export interface Program {
+  program_id: string;
+  program_name: string;
+  description?: string;
+  duration?: string;
+  degree_type?: string;
+}
+
+export interface Status {
+  status_id: string;
+  status_name: string;
+  description?: string;
+}
