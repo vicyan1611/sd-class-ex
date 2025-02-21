@@ -1,6 +1,7 @@
 import Faculty from "../models/Faculty";
 import Student from "../models/Student";
-
+import Program from "../models/Program";
+import Status from "../models/Status";
 const faculties = [
   {
     faculty_id: "LAW",
@@ -95,6 +96,47 @@ const students = [
   },
 ];
 
+const programs = [
+  {
+    program_id: "LAW_LLB",
+    program_name: "Cử nhân Luật",
+    description: "Chương trình đào tạo cử nhân Luật",
+    duration: "4 years",
+    degree_type: "Bachelor",
+  },
+  {
+    program_id: "ENG_BA",
+    program_name: "Cử nhân Tiếng Anh thương mại",
+    description: "Chương trình đào tạo cử nhân Tiếng Anh thương mại",
+    duration: "4 years",
+    degree_type: "Bachelor",
+  },
+  // Add more programs as needed
+];
+
+const statuses = [
+  {
+    status_id: "Đang học",
+    status_name: "Đang học",
+    description: "Sinh viên đang theo học",
+  },
+  {
+    status_id: "Đã tốt nghiệp",
+    status_name: "Đã tốt nghiệp",
+    description: "Sinh viên đã hoàn thành chương trình học",
+  },
+  {
+    status_id: "Đã thôi học",
+    status_name: "Đã thôi học",
+    description: "Sinh viên đã thôi học",
+  },
+  {
+    status_id: "Tạm dừng học",
+    status_name: "Tạm dừng học",
+    description: "Sinh viên tạm dừng học tập",
+  },
+];
+
 export const initializeData = async () => {
   try {
     // Check if faculties table is empty
@@ -103,6 +145,20 @@ export const initializeData = async () => {
       console.log("Initializing faculties data...");
       await Faculty.bulkCreate(faculties);
       console.log("Faculties data initialized successfully!");
+    }
+
+    const programCount = await Program.count();
+    if (programCount === 0) {
+      console.log("Initializing programs data...");
+      await Program.bulkCreate(programs);
+      console.log("Programs data initialized successfully!");
+    }
+
+    const statusCount = await Status.count();
+    if (statusCount === 0) {
+      console.log("Initializing statuses data...");
+      await Status.bulkCreate(statuses);
+      console.log("Statuses data initialized successfully!");
     }
 
     // Check if students table is empty

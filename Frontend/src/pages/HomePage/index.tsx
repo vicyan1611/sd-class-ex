@@ -5,8 +5,10 @@ import StudentForm from "../../components/StudentForm";
 import { Student } from "../../types";
 import axiosInstance from "../../api/config";
 import AboutDialogue from "../../components/AboutDialogue";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
   const [students, setStudents] = useState<Student[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
@@ -111,6 +113,14 @@ const HomePage = () => {
         className="mb-4 px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"
       >
         Add New Student
+      </button>
+      <button
+        className="mb-4 px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"
+        onClick={() => {
+          navigate("/management-settings");
+        }}
+      >
+        Management Settings
       </button>
       <button
         onClick={() => setShowAbout(true)}
