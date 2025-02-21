@@ -1,6 +1,5 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/database";
-import Student from "./Student";
 
 interface ProgramAttributes {
   program_id: string;
@@ -48,7 +47,5 @@ Program.init(
     modelName: "Program",
   },
 );
-
-Student.belongsTo(Program, { foreignKey: "program_id" });
 
 export default Program;

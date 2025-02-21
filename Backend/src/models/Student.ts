@@ -1,6 +1,8 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/database";
-
+import Program from "./Program";
+import Status from "./Status";
+import Faculty from "./Faculty";
 interface StudentAttributes {
   student_id: string;
   facultyId: string;
@@ -8,11 +10,11 @@ interface StudentAttributes {
   date_of_birth: Date;
   gender: string;
   course_year: string;
-  program: string;
+  program_id: string;
   address: string;
   email: string;
   phone: string;
-  student_status: string;
+  status_id: string;
 }
 
 class Student extends Model<StudentAttributes> implements StudentAttributes {
@@ -22,11 +24,11 @@ class Student extends Model<StudentAttributes> implements StudentAttributes {
   public date_of_birth!: Date;
   public gender!: string;
   public course_year!: string;
-  public program!: string;
+  public program_id!: string;
   public address!: string;
   public email!: string;
   public phone!: string;
-  public student_status!: string;
+  public status_id!: string;
 }
 
 Student.init(
@@ -56,7 +58,7 @@ Student.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    program: {
+    program_id: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -73,7 +75,7 @@ Student.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    student_status: {
+    status_id: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -83,5 +85,8 @@ Student.init(
     modelName: "Student",
   },
 );
+Student.belongsTo(Status, { foreignKey: "status_id" });
+Student.belongsTo(Program, { foreignKey: "program_id" });
+Student.belongsTo(Faculty, { foreignKey: "facultyId" });
 
 export default Student;

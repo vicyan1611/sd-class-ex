@@ -2,12 +2,27 @@ import express from "express";
 import Student from "../models/Student";
 import { Op } from "sequelize";
 import { Request, Response } from "express";
+import Faculty from "../models/Faculty";
+import Program from "../models/Program";
+import Status from "../models/Status";
 const router = express.Router();
 
 // Get all students
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const students = await Student.findAll();
+    const students = await Student.findAll({
+      include: [
+        { model: Faculty, attributes: ["faculty_name"] },
+        {
+          model: Program,
+          attributes: ["program_name"],
+        },
+        {
+          model: Status,
+          attributes: ["status_name"],
+        },
+      ],
+    });
     if (!students) {
       res.status(404).json({ message: "Students not found" });
     } else {

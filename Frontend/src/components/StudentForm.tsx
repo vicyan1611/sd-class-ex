@@ -20,8 +20,8 @@ const StudentForm = ({
       student_id: formData.get("student_id") as string,
       full_name: formData.get("full_name") as string,
       email: formData.get("email") as string,
-      program: formData.get("program") as string,
-      student_status: formData.get("student_status") as string,
+      program_id: formData.get("program_id") as string,
+      status_id: formData.get("status_id") as string,
       date_of_birth: new Date(formData.get("date_of_birth") as string),
       gender: formData.get("gender") as string,
       course_year: formData.get("course_year") as string,
@@ -121,11 +121,11 @@ const StudentForm = ({
           </div>
 
           <div className="mb-4">
-            <label className="block mb-2">Program</label>
+            <label className="block mb-2">Program ID</label>
             <input
               type="text"
-              name="program"
-              defaultValue={student.program}
+              name="program_id"
+              defaultValue={student.program_id}
               className="w-full px-3 py-2 border rounded"
               required
             />
@@ -155,8 +155,8 @@ const StudentForm = ({
           <div className="mb-4">
             <label className="block mb-2">Status</label>
             <select
-              name="student_status"
-              defaultValue={student.student_status}
+              name="status_id"
+              defaultValue={student.status_id}
               className="w-full px-3 py-2 border rounded"
               required
             >

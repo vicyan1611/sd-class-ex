@@ -1,6 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/database";
-import Student from "./Student";
+
 interface StatusAttributes {
   status_id: string;
   status_name: string;
@@ -35,7 +35,5 @@ Status.init(
     modelName: "Status",
   },
 );
-
-Student.belongsTo(Status, { foreignKey: "status_id" });
 
 export default Status;

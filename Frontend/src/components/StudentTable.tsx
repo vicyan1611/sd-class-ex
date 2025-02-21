@@ -15,7 +15,7 @@ const StudentTable = ({ students, onEdit, onDelete }: StudentTableProps) => {
               Student ID
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-              Faculty ID
+              Faculty
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
               Full Name
@@ -56,7 +56,7 @@ const StudentTable = ({ students, onEdit, onDelete }: StudentTableProps) => {
                 {student.student_id}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {student.facultyId}
+                {student.Faculty?.faculty_name || student.facultyId}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 {student.full_name}
@@ -68,12 +68,14 @@ const StudentTable = ({ students, onEdit, onDelete }: StudentTableProps) => {
               <td className="px-6 py-4 whitespace-nowrap">
                 {student.course_year}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">{student.program}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {student.Program?.program_name || student.program_id}
+              </td>
               <td className="px-6 py-4 whitespace-nowrap">{student.address}</td>
               <td className="px-6 py-4 whitespace-nowrap">{student.email}</td>
               <td className="px-6 py-4 whitespace-nowrap">{student.phone}</td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {student.student_status}
+                {student.Status?.status_name || student.status_id}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <button

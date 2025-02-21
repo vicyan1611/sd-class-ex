@@ -1,6 +1,5 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/database";
-import Student from "./Student";
 
 interface FacultyAttributes {
   faculty_id: string;
@@ -63,8 +62,5 @@ Faculty.init(
     modelName: "Faculty",
   },
 );
-
-// Define the relationship between Faculty and Student
-Student.belongsTo(Faculty, { foreignKey: "facultyId" });
 
 export default Faculty;

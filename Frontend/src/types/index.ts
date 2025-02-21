@@ -5,11 +5,14 @@ export interface Student {
   date_of_birth: Date;
   gender: string;
   course_year: string;
-  program: string;
+  program_id: string;
   address: string;
   email: string;
   phone: string;
-  student_status: string;
+  status_id: string;
+  Faculty?: Faculty;
+  Program?: Program;
+  Status?: Status;
 }
 
 export interface Faculty {
