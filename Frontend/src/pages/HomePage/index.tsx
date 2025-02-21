@@ -6,6 +6,7 @@ import { Student } from "../../types";
 import axiosInstance from "../../api/config";
 import AboutDialogue from "../../components/AboutDialogue";
 import { useNavigate } from "react-router-dom";
+import ImportExportDialog from "../../components/ImportExportDialog";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const HomePage = () => {
   const [showAbout, setShowAbout] = useState(false);
   const [selectedStudent, setSelectStudent] = useState<Partial<Student>>({});
   const [isEdit, setIsEdit] = useState(false);
+  const [showImportExport, setShowImportExport] = useState(false);
 
   useEffect(() => {
     fetchStudents();
@@ -144,6 +146,19 @@ const HomePage = () => {
       >
         About App
       </button>
+      <button
+        onClick={() => setShowImportExport(true)}
+        className="mb-4 px-4 py-2 bg-blue-500 rounded hover:bg-blue-600 ml-2"
+      >
+        Import/Export Data
+      </button>
+      {showImportExport && (
+        <ImportExportDialog
+          students={students}
+          onClose={() => setShowImportExport(false)}
+          onImportComplete={fetchStudents}
+        />
+      )}
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <StudentTable
         students={students}
