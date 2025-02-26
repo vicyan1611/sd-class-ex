@@ -1,4 +1,6 @@
 import { Student } from "../types";
+import {validateEmail, validatePhone} from "../utils/dataValidation.ts";
+import * as React from "react";
 
 interface StudentFormProps {
   student: Partial<Student>;
@@ -29,6 +31,14 @@ const StudentForm = ({
       phone: formData.get("phone") as string,
       facultyId: formData.get("facultyId") as string,
     };
+    if (!validateEmail(studentData?.email)) {
+        alert("Invalid email");
+        return;
+    }
+    if (!validatePhone(studentData?.phone)) {
+        alert("Invalid phone number");
+        return;
+    }
     onSubmit(studentData);
   };
   console.log(student.date_of_birth);
