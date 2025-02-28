@@ -1,9 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axiosInstance from "../../api/config";
-import { useEffect } from "react";
+import { StatusTransition } from "../../types";
+
 const ConfigurationPage = () => {
   const navigate = useNavigate();
+  const [statusTransitions, setStatusTransitions] = useState<
+    StatusTransition[]
+  >([]);
+  const [newfromStatus, setNewfromStatus] = useState("");
+  const [newtoStatus, setNewtoStatus] = useState("");
+
   const [saveStatus, setSaveStatus] = useState<{
     message: string;
     type: "success" | "error" | "";
@@ -12,18 +19,31 @@ const ConfigurationPage = () => {
     emailDomain: string;
     phonePattern: string;
   }>({ emailDomain: "", phonePattern: "" });
+
   const handleChange = (section: string, value: string) => {
     setConfig({ ...config, [section]: value });
+    console.log(config);
   };
 
   const fetchConfig = async () => {
     try {
       const response = await axiosInstance.get("/configurations");
-      setConfig(response.data);
+      setConfig(response.data[0]);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const fetchStatusTransitions = async () => {
+    try {
+      const response = await axiosInstance.get("/status-transitions");
+      console.log(response.data);
+      setStatusTransitions(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleSave = async () => {
     setSaveStatus({
       message: "Configuration saved successfully!",
@@ -34,8 +54,32 @@ const ConfigurationPage = () => {
     }, 3000);
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      await axiosInstance.delete(`/status-transitions/${id}`);
+      fetchStatusTransitions();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleAddTransition = async () => {
+    if (!newfromStatus.trim()) return;
+    if (!newtoStatus.trim()) return;
+    try {
+      await axiosInstance.post("/status-transitions", {
+        from_status_id: parseInt(newfromStatus),
+        to_status_id: parseInt(newtoStatus),
+      });
+      fetchStatusTransitions();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchConfig();
+    fetchStatusTransitions();
   }, []);
 
   return (
@@ -93,6 +137,52 @@ const ConfigurationPage = () => {
         >
           Save Configuration
         </button>
+      </div>
+      <div className="bg-white shadow-md rounded-lg p-6 mb-6">
+        <h2 className="text-xl font-semibold mb-4">Status Transition</h2>
+        <label className="block mb-2">Add Transition</label>
+        <div className="flex gap-2 mb-4">
+          <input
+            type="text"
+            value={newfromStatus}
+            onChange={(e) => setNewfromStatus(e.target.value)}
+            placeholder="Transition ID"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="text"
+            value={newtoStatus}
+            onChange={(e) => setNewtoStatus(e.target.value)}
+            placeholder="Transition ID"
+            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            onClick={handleAddTransition}
+            className="px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"
+          >
+            Add Transition
+          </button>
+        </div>
+        <label className="block mb-2">Current Transitions</label>
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+          {statusTransitions.map((transition) => (
+            <div
+              className="p-4 border-b border-gray-200 flex justify-between items-center"
+              key={transition.id}
+            >
+              <span>
+                {transition.from_status?.status_name} to{" "}
+                {transition.to_status?.status_name}
+              </span>
+              <button
+                onClick={() => handleDelete(transition.id)}
+                className="text-red-600 hover:text-red-800"
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

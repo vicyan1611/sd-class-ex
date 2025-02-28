@@ -1,5 +1,8 @@
 import { Faculty, Student, Status, Program } from "../types";
-import { validateData } from "../utils/dataValidation.ts";
+import {
+  validateData,
+  validateStatusTransition,
+} from "../utils/dataValidation.ts";
 import * as React from "react";
 import axiosInstance from "../api/config.ts";
 interface StudentFormProps {
@@ -18,6 +21,7 @@ const StudentForm = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
+
     const studentData: Partial<Student> = {
       student_id: formData.get("student_id") as string,
       full_name: formData.get("full_name") as string,
@@ -37,6 +41,12 @@ const StudentForm = ({
     }
     if (!(await validateData("phone", studentData?.phone))) {
       alert("Invalid phone number");
+      return;
+    }
+    const from_status_id = student.status_id;
+    const to_status_id = studentData.status_id;
+    if (!(await validateStatusTransition(from_status_id, to_status_id))) {
+      alert("Invalid status transition");
       return;
     }
     onSubmit(studentData);

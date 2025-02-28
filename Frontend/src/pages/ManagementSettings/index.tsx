@@ -284,7 +284,11 @@ const ManagementSettings = () => {
                   className="px-2 py-1 border rounded"
                 />
               ) : (
-                <span>{status.status_name}</span>
+                <div>
+                  <span>{status.status_name}</span>
+                  <br />
+                  <span>StatusID: {status.id}</span>
+                </div>
               )}
               <button
                 className="text-blue-600 hover:text-blue-800"

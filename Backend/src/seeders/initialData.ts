@@ -3,6 +3,8 @@ import Student from "../models/Student";
 import Program from "../models/Program";
 import Status from "../models/Status";
 import Configuration from "../models/Configuration";
+import StatusTransition from "../models/StatusTransition";
+
 const faculties = [
   {
     faculty_name: "Khoa Luật",
@@ -146,6 +148,25 @@ const configurations = [
   },
 ];
 
+const statusTransitions = [
+  {
+    from_status_id: 1,
+    to_status_id: 2,
+  },
+  {
+    from_status_id: 1,
+    to_status_id: 3,
+  },
+  {
+    from_status_id: 1,
+    to_status_id: 4,
+  },
+  {
+    from_status_id: 4,
+    to_status_id: 1,
+  },
+];
+
 export const initializeData = async () => {
   try {
     const facultyCount = await Faculty.count();
@@ -180,6 +201,12 @@ export const initializeData = async () => {
     if (configuationCount === 0) {
       console.log("Initializing configuration data...");
       await Configuration.bulkCreate(configurations);
+    }
+
+    const statusTransitionCount = await StatusTransition.count();
+    if (statusTransitionCount === 0) {
+      console.log("Initializing status transitions data...");
+      await StatusTransition.bulkCreate(statusTransitions);
     }
   } catch (error) {
     console.error("Error initializing data:", error);

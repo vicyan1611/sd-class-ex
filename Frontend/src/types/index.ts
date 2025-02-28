@@ -39,3 +39,11 @@ export interface Status {
   status_name: string;
   description?: string;
 }
+
+export interface StatusTransition {
+  id: number;
+  from_status_id: number;
+  to_status_id: number;
+  from_status?: Status;
+  to_status?: Status;
+}
