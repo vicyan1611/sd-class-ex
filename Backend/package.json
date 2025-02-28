@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "tsx watch --include 'src/**/*.ts' src/index.ts",
     "test-db-connection": "tsx src/config/database.ts"
   },
@@ -14,9 +14,14 @@
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.13.4",
     "@types/sequelize": "^4.28.20",
+    "@types/supertest": "^6.0.2",
     "express": "^4.21.2",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.6",
     "typescript": "^5.7.3"
   },
   "dependencies": {

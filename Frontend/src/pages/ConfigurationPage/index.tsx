@@ -45,13 +45,19 @@ const ConfigurationPage = () => {
   };
 
   const handleSave = async () => {
-    setSaveStatus({
-      message: "Configuration saved successfully!",
-      type: "success",
-    });
-    setTimeout(() => {
-      setSaveStatus({ message: "", type: "" });
-    }, 3000);
+    try {
+      await axiosInstance.put("/configurations/3", config);
+      setSaveStatus({ message: "Configuration saved", type: "success" });
+    } catch (err) {
+      console.log(err);
+      setSaveStatus({
+        message: "Failed to save configuration",
+        type: "error",
+      });
+      setTimeout(() => {
+        setSaveStatus({ message: "", type: "" });
+      }, 3000);
+    }
   };
 
   const handleDelete = async (id: number) => {

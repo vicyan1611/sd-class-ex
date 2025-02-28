@@ -21,7 +21,7 @@ router.post("/", async (req: Request, res: Response) => {
   }
 });
 
-router.put(":/id", async (req: Request, res: Response) => {
+router.put("/:id", async (req: Request, res: Response) => {
   try {
     const config = await Configuration.findByPk(req.params.id);
     if (!config) {
