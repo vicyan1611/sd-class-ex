@@ -34,7 +34,8 @@ const HomePage = () => {
       setStudents(response.data);
       setLoading(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      // setError(err instanceof Error ? err.message : "An error occurred");
+      console.log(err);
       setLoading(false);
     }
   };
@@ -63,10 +64,7 @@ const HomePage = () => {
   const handleSubmit = async (student: Partial<Student>) => {
     try {
       if (isEdit) {
-        await axiosInstance.put(
-          `/students/${selectedStudent.student_id}`,
-          student,
-        );
+        await axiosInstance.put(`/students/${selectedStudent.id}`, student);
       } else {
         await axiosInstance.post("/students", student);
       }

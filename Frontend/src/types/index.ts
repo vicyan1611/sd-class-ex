@@ -1,22 +1,23 @@
 export interface Student {
+  id: number;
   student_id: string;
-  facultyId: string;
+  faculty_id: number;
   full_name: string;
   date_of_birth: Date;
   gender: string;
   course_year: string;
-  program_id: string;
+  program_id: number;
   address: string;
   email: string;
   phone: string;
-  status_id: string;
+  status_id: number;
   Faculty?: Faculty;
   Program?: Program;
   Status?: Status;
 }
 
 export interface Faculty {
-  faculty_id: string;
+  id: number;
   faculty_name: string;
   description?: string;
   established_date?: Date;
@@ -26,7 +27,7 @@ export interface Faculty {
 }
 
 export interface Program {
-  program_id: string;
+  id: number;
   program_name: string;
   description?: string;
   duration?: string;
@@ -34,7 +35,7 @@ export interface Program {
 }
 
 export interface Status {
-  status_id: string;
+  id: number;
   status_name: string;
   description?: string;
 }

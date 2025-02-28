@@ -1,7 +1,7 @@
-import { Student } from "../types";
-import {validateEmail, validatePhone} from "../utils/dataValidation.ts";
+import { Faculty, Student, Status, Program } from "../types";
+import { validateEmail, validatePhone } from "../utils/dataValidation.ts";
 import * as React from "react";
-
+import axiosInstance from "../api/config.ts";
 interface StudentFormProps {
   student: Partial<Student>;
   onSubmit: (student: Partial<Student>) => void;
@@ -22,26 +22,48 @@ const StudentForm = ({
       student_id: formData.get("student_id") as string,
       full_name: formData.get("full_name") as string,
       email: formData.get("email") as string,
-      program_id: formData.get("program_id") as string,
-      status_id: formData.get("status_id") as string,
+      program_id: parseInt(formData.get("program_id") as string),
+      status_id: parseInt(formData.get("status_id") as string),
       date_of_birth: new Date(formData.get("date_of_birth") as string),
       gender: formData.get("gender") as string,
       course_year: formData.get("course_year") as string,
       address: formData.get("address") as string,
       phone: formData.get("phone") as string,
-      facultyId: formData.get("facultyId") as string,
+      faculty_id: parseInt(formData.get("faculty_id") as string),
     };
     if (!validateEmail(studentData?.email)) {
-        alert("Invalid email");
-        return;
+      alert("Invalid email");
+      return;
     }
     if (!validatePhone(studentData?.phone)) {
-        alert("Invalid phone number");
-        return;
+      alert("Invalid phone number");
+      return;
     }
     onSubmit(studentData);
   };
-  console.log(student.date_of_birth);
+
+  const [faculties, setFaculties] = React.useState<Faculty[]>([]);
+  const [programs, setPrograms] = React.useState<Program[]>([]);
+  const [statuses, setStatuses] = React.useState<Status[]>([]);
+  React.useEffect(() => {
+    async function fetchData() {
+      try {
+        const [facultiesRes, programsRes, statusesRes] = await Promise.all([
+          axiosInstance.get("/faculties"),
+          axiosInstance.get("/programs"),
+          axiosInstance.get("/statuses"),
+        ]);
+
+        setFaculties(facultiesRes.data);
+        setPrograms(programsRes.data);
+        setStatuses(statusesRes.data);
+      } catch (err) {
+        console.error("Error loading form data:", err);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
       <div className="bg-white p-6 rounded-lg w-3xl 2xl:w-5xl max-h-[90vh] overflow-y-auto">
@@ -49,18 +71,17 @@ const StudentForm = ({
           {isEdit ? "Edit Student" : "Add New Student"}
         </h2>
         <form onSubmit={handleSubmit}>
-          {!isEdit && (
-            <div className="mb-4">
-              <label className="block mb-2">Student ID</label>
-              <input
-                type="number"
-                name="student_id"
-                defaultValue={student.student_id}
-                className="w-full px-3 py-2 border rounded"
-                required
-              />
-            </div>
-          )}
+          <div className="mb-4">
+            <label className="block mb-2">Student ID</label>
+            <input
+              type="number"
+              name="student_id"
+              defaultValue={student.student_id}
+              className="w-full px-3 py-2 border rounded"
+              required
+            />
+          </div>
+
           <div className="mb-4">
             <label className="block mb-2">Full Name</label>
             <input
@@ -73,14 +94,19 @@ const StudentForm = ({
           </div>
 
           <div className="mb-4">
-            <label className="block mb-2">Faculty ID</label>
-            <input
-              type="text"
-              name="facultyId"
-              defaultValue={student.facultyId}
+            <label className="block mb-2">Faculty</label>
+            <select
+              name="faculty_id"
+              defaultValue={student.faculty_id}
               className="w-full px-3 py-2 border rounded"
               required
-            />
+            >
+              {faculties.map((faculty) => (
+                <option key={faculty.id} value={faculty.id}>
+                  {faculty.faculty_name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="mb-4">
@@ -131,14 +157,19 @@ const StudentForm = ({
           </div>
 
           <div className="mb-4">
-            <label className="block mb-2">Program ID</label>
-            <input
-              type="text"
+            <label className="block mb-2">Program</label>
+            <select
               name="program_id"
               defaultValue={student.program_id}
               className="w-full px-3 py-2 border rounded"
               required
-            />
+            >
+              {programs.map((program) => (
+                <option key={program.id} value={program.id}>
+                  {program.program_name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="mb-4">
@@ -170,10 +201,11 @@ const StudentForm = ({
               className="w-full px-3 py-2 border rounded"
               required
             >
-              <option value="Đang học">Đang học</option>
-              <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
-              <option value="Đã thôi học">Đã thôi học</option>
-              <option value="Tạm dừng học">Tạm dừng học</option>
+              {statuses.map((status) => (
+                <option key={status.id} value={status.id}>
+                  {status.status_name}
+                </option>
+              ))}
             </select>
           </div>
 

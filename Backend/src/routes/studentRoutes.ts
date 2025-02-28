@@ -47,6 +47,7 @@ router.post("/", async (req: Request, res: Response) => {
 router.put("/:id", async (req: Request, res: Response) => {
   try {
     const student = await Student.findByPk(req.params.id);
+    console.log(req.body);
     if (!student) {
       res.status(404).json({ message: "Student not found" });
     } else {
@@ -54,6 +55,7 @@ router.put("/:id", async (req: Request, res: Response) => {
       res.json(student);
     }
   } catch (error) {
+    console.log("hello from catch");
     res.status(400).json({ message: "Error updating student", error });
   }
 });

@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ManagementSettings from "./pages/ManagementSettings";
+import ConfigurationPage from "./pages/ConfigurationPage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -9,6 +10,10 @@ const router = createBrowserRouter([
   {
     path: "/management-settings",
     element: <ManagementSettings />,
+  },
+  {
+    path: "/configuration",
+    element: <ConfigurationPage />,
   },
 ]);
 

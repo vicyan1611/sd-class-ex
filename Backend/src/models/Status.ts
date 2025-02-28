@@ -2,23 +2,23 @@ import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/database";
 
 interface StatusAttributes {
-  status_id: string;
+  id?: number;
   status_name: string;
   description?: string;
 }
 
 class Status extends Model<StatusAttributes> implements StatusAttributes {
-  public status_id!: string;
+  public id!: number;
   public status_name!: string;
   public description!: string;
 }
 
 Status.init(
   {
-    status_id: {
-      type: DataTypes.STRING,
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
     },
     status_name: {
       type: DataTypes.STRING,

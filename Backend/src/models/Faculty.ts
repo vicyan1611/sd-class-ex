@@ -2,7 +2,7 @@ import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/database";
 
 interface FacultyAttributes {
-  faculty_id: string;
+  id?: number;
   faculty_name: string;
   description?: string;
   established_date?: Date;
@@ -12,7 +12,7 @@ interface FacultyAttributes {
 }
 
 class Faculty extends Model<FacultyAttributes> implements FacultyAttributes {
-  public faculty_id!: string;
+  public id!: number;
   public faculty_name!: string;
   public description!: string;
   public established_date!: Date;
@@ -23,10 +23,10 @@ class Faculty extends Model<FacultyAttributes> implements FacultyAttributes {
 
 Faculty.init(
   {
-    faculty_id: {
-      type: DataTypes.STRING,
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
     },
     faculty_name: {
       type: DataTypes.STRING,

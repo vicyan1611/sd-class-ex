@@ -2,7 +2,7 @@ import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/database";
 
 interface ProgramAttributes {
-  program_id: string;
+  id?: number;
   program_name: string;
   description?: string;
   duration?: string;
@@ -10,7 +10,7 @@ interface ProgramAttributes {
 }
 
 class Program extends Model<ProgramAttributes> implements ProgramAttributes {
-  public program_id!: string;
+  public id!: number;
   public program_name!: string;
   public description!: string;
   public duration!: string;
@@ -19,10 +19,10 @@ class Program extends Model<ProgramAttributes> implements ProgramAttributes {
 
 Program.init(
   {
-    program_id: {
-      type: DataTypes.STRING,
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
     },
     program_name: {
       type: DataTypes.STRING,
