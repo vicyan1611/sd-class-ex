@@ -1,5 +1,5 @@
 import { Faculty, Student, Status, Program } from "../types";
-import { validateEmail, validatePhone } from "../utils/dataValidation.ts";
+import { validateData } from "../utils/dataValidation.ts";
 import * as React from "react";
 import axiosInstance from "../api/config.ts";
 interface StudentFormProps {
@@ -15,7 +15,7 @@ const StudentForm = ({
   onClose,
   isEdit,
 }: StudentFormProps) => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const studentData: Partial<Student> = {
@@ -31,11 +31,11 @@ const StudentForm = ({
       phone: formData.get("phone") as string,
       faculty_id: parseInt(formData.get("faculty_id") as string),
     };
-    if (!validateEmail(studentData?.email)) {
+    if (!(await validateData("email", studentData?.email))) {
       alert("Invalid email");
       return;
     }
-    if (!validatePhone(studentData?.phone)) {
+    if (!(await validateData("phone", studentData?.phone))) {
       alert("Invalid phone number");
       return;
     }

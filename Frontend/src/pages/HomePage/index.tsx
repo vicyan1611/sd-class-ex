@@ -138,6 +138,16 @@ const HomePage = () => {
       >
         Management Settings
       </button>
+
+      <button
+        className="mb-4 px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"
+        onClick={() => {
+          navigate("/configurations");
+        }}
+      >
+        Configurations
+      </button>
+
       <button
         onClick={() => setShowAbout(true)}
         className="mb-4 px-4 py-2 bg-blue-500 rounded hover:bg-blue-600"

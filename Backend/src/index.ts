@@ -3,6 +3,7 @@ import studentRoutes from "./routes/studentRoutes";
 import facultiesRoutes from "./routes/facultyRoutes";
 import programRoutes from "./routes/programRoutes";
 import statusRoutes from "./routes/statusRoutes";
+import configurationRoutes from "./routes/configurationRoutes";
 import cors from "cors";
 import sequelize from "./config/database";
 import { initializeData } from "./seeders/initialData";
@@ -19,6 +20,7 @@ app.use("/api/students", studentRoutes);
 app.use("/api/faculties", facultiesRoutes);
 app.use("/api/programs", programRoutes);
 app.use("/api/statuses", statusRoutes);
+app.use("/api/configurations", configurationRoutes);
 
 sequelize
   .sync()

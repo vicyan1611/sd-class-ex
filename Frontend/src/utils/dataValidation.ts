@@ -1,23 +1,19 @@
-import { validationConfig } from "../config/validation";
+import axiosInstance from "../api/config";
 
-export const validateEmail = (email: string | undefined): boolean => {
-  if (!email) return false;
-  if (!validationConfig.email.pattern.test(email)) {
+export const validateData = async (
+  type: "email" | "phone",
+  data: string | undefined,
+) => {
+  if (!data) return false;
+  const config = await axiosInstance.get("/configurations");
+  if (type == "email") {
+    const domain = data.substring(data.indexOf("@"));
+    if (domain === config.data.allowedDomain) return true;
     return false;
-  }
-  const domain = email.substring(email.indexOf("@"));
-  for (const allowedDomain of validationConfig.email.allowedDomains) {
-    if (domain === allowedDomain) return true;
-  }
-  return false;
-};
-
-export const validatePhone = (
-    phone: string | undefined,
-    countriesPattern = Object.values(validationConfig.phone),
-): boolean => {
-  for (const countryPattern of countriesPattern) {
-    if (countryPattern.test(phone)) return true;
+  } else {
+    const regex = new RegExp(config.data.phonePattern);
+    if (regex.test(data)) return true;
+    return false;
   }
   return false;
 };

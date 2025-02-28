@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     element: <ManagementSettings />,
   },
   {
-    path: "/configuration",
+    path: "/configurations",
     element: <ConfigurationPage />,
   },
 ]);

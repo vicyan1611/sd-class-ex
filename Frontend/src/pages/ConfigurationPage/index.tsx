@@ -1,28 +1,30 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { validationConfig } from "../../config/validation";
-
+import axiosInstance from "../../api/config";
+import { useEffect } from "react";
 const ConfigurationPage = () => {
   const navigate = useNavigate();
   const [saveStatus, setSaveStatus] = useState<{
     message: string;
     type: "success" | "error" | "";
   }>({ message: "", type: "" });
-  const [config, setConfig] = useState(validationConfig);
-  const handleChange = (
-    section: "email" | "phone",
-    field: string,
-    value: string,
-  ) => {
-    setConfig((prev) => ({
-      ...prev,
-      [section]: {
-        ...prev[section],
-        [field]: value,
-      },
-    }));
+  const [config, setConfig] = useState<{
+    emailDomain: string;
+    phonePattern: string;
+  }>({ emailDomain: "", phonePattern: "" });
+  const handleChange = (section: string, value: string) => {
+    setConfig({ ...config, [section]: value });
   };
-  const handleSave = () => {
+
+  const fetchConfig = async () => {
+    try {
+      const response = await axiosInstance.get("/configurations");
+      setConfig(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleSave = async () => {
     setSaveStatus({
       message: "Configuration saved successfully!",
       type: "success",
@@ -31,6 +33,10 @@ const ConfigurationPage = () => {
       setSaveStatus({ message: "", type: "" });
     }, 3000);
   };
+
+  useEffect(() => {
+    fetchConfig();
+  }, []);
 
   return (
     <div className="container mx-auto p-6">
@@ -59,10 +65,8 @@ const ConfigurationPage = () => {
         <label className="block mb-2">Allowed Domains (comma-separated)</label>
         <input
           type="text"
-          value={config.email.allowedDomains}
-          onChange={(e) =>
-            handleChange("email", "allowedDomains", e.target.value)
-          }
+          value={config.emailDomain}
+          onChange={(e) => handleChange("emailDomain", e.target.value)}
           className="w-full px-3 py-2 border rounded"
         />
         <p className="text-sm text-gray-500 mt-1">
@@ -71,27 +75,15 @@ const ConfigurationPage = () => {
       </div>
       <div className="bg-white shadow-md rounded-lg p-6 mb-6">
         <h2 className="text-xl font-semibold mb-4">Phone Validation</h2>
-        <label className="block mb-2">VN Phone Number Pattern (RegEx)</label>
+        <label className="block mb-2">Phone Number Pattern (RegEx)</label>
         <input
           type="text"
-          value={config.phone.VN.source}
-          onChange={(e) => handleChange("phone", "VN", e.target.value)}
+          value={config.phonePattern}
+          onChange={(e) => handleChange("phonePattern", e.target.value)}
           className="w-full px-3 py-2 border rounded"
         />
         <p className="text-sm text-gray-500 mt-1">
           Example: /^(\+84|0)[1-9][0-9]{8}$/
-        </p>
-        <label className="block mb-2 mt-4">
-          US Phone Number Pattern (RegEx)
-        </label>
-        <input
-          type="text"
-          value={config.phone.US.source}
-          onChange={(e) => handleChange("phone", "US", e.target.value)}
-          className="w-full px-3 py-2 border rounded"
-        />
-        <p className="text-sm text-gray-500 mt-1">
-          Example: /^(\+1)?[2-9][0-9]{9}$/
         </p>
       </div>
       <div className="flex justify-end">

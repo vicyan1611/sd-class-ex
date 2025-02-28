@@ -55,7 +55,6 @@ router.put("/:id", async (req: Request, res: Response) => {
       res.json(student);
     }
   } catch (error) {
-    console.log("hello from catch");
     res.status(400).json({ message: "Error updating student", error });
   }
 });
