@@ -7,17 +7,15 @@ const ManagementSettings = () => {
   const [programs, setPrograms] = useState<Program[]>([]);
   const [statuses, setStatuses] = useState<Status[]>([]);
   const [newFacultyName, setNewFacultyName] = useState("");
-  const [newFacultyId, setNewFacultyId] = useState("");
   const [newProgramName, setNewProgramName] = useState("");
-  const [newProgramId, setNewProgramId] = useState("");
-  const [newStatusName, setNewStatusName] = useState("");
-  const [newStatusId, setNewStatusId] = useState("");
 
-  const [editingFacultyId, setEditingFacultyId] = useState<string | null>(null);
+  const [newStatusName, setNewStatusName] = useState("");
+
+  const [editingFacultyId, setEditingFacultyId] = useState<number | null>(null);
   const [editingFacultyName, setEditingFacultyName] = useState("");
-  const [editingProgramId, setEditingProgramId] = useState<string | null>(null);
+  const [editingProgramId, setEditingProgramId] = useState<number | null>(null);
   const [editingProgramName, setEditingProgramName] = useState("");
-  const [editingStatusId, setEditingStatusId] = useState<string | null>(null);
+  const [editingStatusId, setEditingStatusId] = useState<number | null>(null);
   const [editingStatusName, setEditingStatusName] = useState("");
 
   const [error, setError] = useState<string | null>(null);
@@ -57,14 +55,13 @@ const ManagementSettings = () => {
 
   const handleAddFaculty = async () => {
     if (!newFacultyName.trim()) return;
-    if (!newFacultyId.trim()) return;
+
     try {
       await axiosInstance.post("/faculties", {
-        faculty_id: newFacultyId,
         faculty_name: newFacultyName,
       });
       setNewFacultyName("");
-      setNewFacultyId("");
+
       fetchFaculties();
     } catch (err) {
       setError("Failed to add faculty" + err);
@@ -73,14 +70,13 @@ const ManagementSettings = () => {
 
   const handleAddProgram = async () => {
     if (!newProgramName.trim()) return;
-    if (!newProgramId.trim()) return;
+
     try {
       await axiosInstance.post("/programs", {
-        program_id: newProgramId,
         program_name: newProgramName,
       });
       setNewProgramName("");
-      setNewProgramId("");
+
       fetchPrograms();
     } catch (err) {
       setError("Failed to add program" + err);
@@ -89,14 +85,13 @@ const ManagementSettings = () => {
 
   const handleAddStatus = async () => {
     if (!newStatusName.trim()) return;
-    if (!newStatusId.trim()) return;
+
     try {
       await axiosInstance.post("/statuses", {
-        status_id: newStatusId,
         status_name: newStatusName,
       });
       setNewStatusName("");
-      setNewStatusId("");
+
       fetchStatuses();
     } catch (err) {
       setError("Failed to add status" + err);
@@ -104,9 +99,9 @@ const ManagementSettings = () => {
   };
 
   const handleEditFaculty = async (faculty: Faculty) => {
-    if (editingFacultyId === faculty.faculty_id) {
+    if (editingFacultyId === faculty.id) {
       try {
-        await axiosInstance.put(`/faculties/${faculty.faculty_id}`, {
+        await axiosInstance.put(`/faculties/${faculty.id}`, {
           faculty_name: editingFacultyName,
         });
         setEditingFacultyId(null);
@@ -116,15 +111,15 @@ const ManagementSettings = () => {
         setError("Failed to update faculty" + err);
       }
     } else {
-      setEditingFacultyId(faculty.faculty_id);
+      setEditingFacultyId(faculty.id);
       setEditingFacultyName(faculty.faculty_name);
     }
   };
 
   const handleEditProgram = async (program: Program) => {
-    if (editingProgramId === program.program_id) {
+    if (editingProgramId === program.id) {
       try {
-        await axiosInstance.put(`/programs/${program.program_id}`, {
+        await axiosInstance.put(`/programs/${program.id}`, {
           program_name: editingProgramName,
         });
         setEditingProgramId(null);
@@ -134,15 +129,15 @@ const ManagementSettings = () => {
         setError("Failed to update program" + err);
       }
     } else {
-      setEditingProgramId(program.program_id);
+      setEditingProgramId(program.id);
       setEditingProgramName(program.program_name);
     }
   };
 
   const handleEditStatus = async (status: Status) => {
-    if (editingStatusId === status.status_id) {
+    if (editingStatusId === status.id) {
       try {
-        await axiosInstance.put(`/statuses/${status.status_id}`, {
+        await axiosInstance.put(`/statuses/${status.id}`, {
           status_name: editingStatusName,
         });
         setEditingStatusId(null);
@@ -152,7 +147,7 @@ const ManagementSettings = () => {
         setError("Failed to update status" + err);
       }
     } else {
-      setEditingStatusId(status.status_id);
+      setEditingStatusId(status.id);
       setEditingStatusName(status.status_name);
     }
   };
@@ -173,13 +168,6 @@ const ManagementSettings = () => {
         <div className="flex gap-2 mb-4">
           <input
             type="text"
-            value={newFacultyId}
-            onChange={(e) => setNewFacultyId(e.target.value)}
-            placeholder="New faculty ID"
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="text"
             value={newFacultyName}
             onChange={(e) => setNewFacultyName(e.target.value)}
             placeholder="New faculty name"
@@ -195,10 +183,10 @@ const ManagementSettings = () => {
         <div className="bg-white rounded-lg shadow overflow-hidden">
           {faculties.map((faculty) => (
             <div
-              key={faculty.faculty_id}
+              key={faculty.id}
               className="p-4 border-b border-gray-200 flex justify-between items-center"
             >
-              {editingFacultyId === faculty.faculty_id ? (
+              {editingFacultyId === faculty.id ? (
                 <input
                   type="text"
                   value={editingFacultyName}
@@ -212,7 +200,7 @@ const ManagementSettings = () => {
                 className="text-blue-600 hover:text-blue-800"
                 onClick={() => handleEditFaculty(faculty)}
               >
-                {editingFacultyId === faculty.faculty_id ? "Save" : "Edit"}
+                {editingFacultyId === faculty.id ? "Save" : "Edit"}
               </button>
             </div>
           ))}
@@ -223,13 +211,6 @@ const ManagementSettings = () => {
       <div className="mb-8">
         <h2 className="text-2xl font-semibold mb-4">Programs</h2>
         <div className="flex gap-2 mb-4">
-          <input
-            type="text"
-            value={newProgramId}
-            onChange={(e) => setNewProgramId(e.target.value)}
-            placeholder="New program ID"
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
           <input
             type="text"
             value={newProgramName}
@@ -247,10 +228,10 @@ const ManagementSettings = () => {
         <div className="bg-white rounded-lg shadow overflow-hidden">
           {programs.map((program) => (
             <div
-              key={program.program_id}
+              key={program.id}
               className="p-4 border-b border-gray-200 flex justify-between items-center"
             >
-              {editingProgramId === program.program_id ? (
+              {editingProgramId === program.id ? (
                 <input
                   type="text"
                   value={editingProgramName}
@@ -264,7 +245,7 @@ const ManagementSettings = () => {
                 className="text-blue-600 hover:text-blue-800"
                 onClick={() => handleEditProgram(program)}
               >
-                {editingProgramId === program.program_id ? "Save" : "Edit"}
+                {editingProgramId === program.id ? "Save" : "Edit"}
               </button>
             </div>
           ))}
@@ -275,13 +256,6 @@ const ManagementSettings = () => {
       <div className="mb-8">
         <h2 className="text-2xl font-semibold mb-4">Student Statuses</h2>
         <div className="flex gap-2 mb-4">
-          <input
-            type="text"
-            value={newStatusId}
-            onChange={(e) => setNewStatusId(e.target.value)}
-            placeholder="New Status ID"
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
           <input
             type="text"
             value={newStatusName}
@@ -299,10 +273,10 @@ const ManagementSettings = () => {
         <div className="bg-white rounded-lg shadow overflow-hidden">
           {statuses.map((status) => (
             <div
-              key={status.status_id}
+              key={status.id}
               className="p-4 border-b border-gray-200 flex justify-between items-center"
             >
-              {editingStatusId === status.status_id ? (
+              {editingStatusId === status.id ? (
                 <input
                   type="text"
                   value={editingStatusName}
@@ -316,7 +290,7 @@ const ManagementSettings = () => {
                 className="text-blue-600 hover:text-blue-800"
                 onClick={() => handleEditStatus(status)}
               >
-                {editingStatusId === status.status_id ? "Save" : "Edit"}
+                {editingStatusId === status.id ? "Save" : "Edit"}
               </button>
             </div>
           ))}
