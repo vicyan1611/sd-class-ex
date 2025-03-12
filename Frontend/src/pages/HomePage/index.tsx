@@ -7,6 +7,7 @@ import axiosInstance from "../../api/config";
 import AboutDialogue from "../../components/AboutDialogue";
 import { useNavigate } from "react-router-dom";
 import ImportExportDialog from "../../components/ImportExportDialog";
+import StatusCertificateDialog from "../../components/StatusCertificateDialog";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const [showCertificateDialog, setShowCertificateDialog] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
   const [selectedStudent, setSelectStudent] = useState<Partial<Student>>({});
   const [isEdit, setIsEdit] = useState(false);
@@ -50,6 +52,11 @@ const HomePage = () => {
     setSelectStudent(student);
     setIsEdit(true);
     setShowForm(true);
+  };
+
+  const handleCertificate = (student: Student) => {
+    setSelectStudent(student);
+    setShowCertificateDialog(true);
   };
 
   const handleDelete = async (student: Student) => {
@@ -172,6 +179,7 @@ const HomePage = () => {
         students={students}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onExport={handleCertificate}
       />
       {showForm && (
         <StudentForm
@@ -179,6 +187,12 @@ const HomePage = () => {
           onSubmit={handleSubmit}
           isEdit={isEdit}
           onClose={() => setShowForm(false)}
+        />
+      )}
+      {showCertificateDialog && (
+        <StatusCertificateDialog
+          student={selectedStudent}
+          onClose={() => setShowCertificateDialog(false)}
         />
       )}
       {showAbout && <AboutDialogue onClose={() => setShowAbout(false)} />}

@@ -33,6 +33,32 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
+// Get a student by id
+router.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const student = await Student.findByPk(req.params.id, {
+      include: [
+        { model: Faculty, attributes: ["faculty_name"] },
+        {
+          model: Program,
+          attributes: ["program_name"],
+        },
+        {
+          model: Status,
+          attributes: ["status_name"],
+        },
+      ],
+    });
+    if (!student) {
+      res.status(404).json({ message: "Student not found" });
+    } else {
+      res.json(student);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching student", error });
+  }
+});
+
 // Add a new student
 router.post("/", async (req: Request, res: Response) => {
   try {

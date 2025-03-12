@@ -3,9 +3,15 @@ interface StudentTableProps {
   students: Student[];
   onEdit: (student: Student) => void;
   onDelete: (student: Student) => void;
+  onExport: (student: Student) => void;
 }
 
-const StudentTable = ({ students, onEdit, onDelete }: StudentTableProps) => {
+const StudentTable = ({
+  students,
+  onEdit,
+  onDelete,
+  onExport,
+}: StudentTableProps) => {
   return (
     <div className="overflow-x-auto min-w-full">
       <table className="min-w-full bg-white border border-gray-300">
@@ -56,7 +62,7 @@ const StudentTable = ({ students, onEdit, onDelete }: StudentTableProps) => {
                 {student.student_id}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {student.Faculty?.faculty_name || student.facultyId}
+                {student.Faculty?.faculty_name || student.faculty_id}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 {student.full_name}
@@ -78,6 +84,12 @@ const StudentTable = ({ students, onEdit, onDelete }: StudentTableProps) => {
                 {student.Status?.status_name || student.status_id}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
+                <button
+                  className="text-blue-600 hover:text-blue-800 mr-2"
+                  onClick={() => onExport(student)}
+                >
+                  Status Certificate
+                </button>
                 <button
                   onClick={() => onEdit(student)}
                   className="text-blue-600 hover:text-blue-800 mr-2"
