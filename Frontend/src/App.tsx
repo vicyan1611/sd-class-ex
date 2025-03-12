@@ -2,18 +2,32 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import ManagementSettings from "./pages/ManagementSettings";
 import ConfigurationPage from "./pages/ConfigurationPage";
+import Layout from "./components/Layout";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: (
+      <Layout>
+        {" "}
+        <HomePage />
+      </Layout>
+    ),
   },
   {
     path: "/management-settings",
-    element: <ManagementSettings />,
+    element: (
+      <Layout>
+        <ManagementSettings />{" "}
+      </Layout>
+    ),
   },
   {
     path: "/configurations",
-    element: <ConfigurationPage />,
+    element: (
+      <Layout>
+        <ConfigurationPage />
+      </Layout>
+    ),
   },
 ]);
 
