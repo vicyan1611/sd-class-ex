@@ -145,6 +145,8 @@ const configurations = [
   {
     emailDomain: "@student.university.edu.vn",
     phonePattern: /^(\+84|0)[1-9][0-9]{8}$/.source,
+    studentDeletionTimeWindow: 30,
+    rulesEnabled: true,
   },
 ];
 

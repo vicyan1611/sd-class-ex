@@ -5,6 +5,8 @@ interface ConfigurationAttributes {
   id?: number;
   emailDomain: string;
   phonePattern: string;
+  studentDeletionTimeWindow: number;
+  rulesEnabled: boolean;
 }
 
 class Configuration
@@ -14,6 +16,8 @@ class Configuration
   public id!: number;
   public emailDomain!: string;
   public phonePattern!: string;
+  public studentDeletionTimeWindow!: number;
+  public rulesEnabled!: boolean;
 }
 
 Configuration.init(
@@ -29,6 +33,14 @@ Configuration.init(
     },
     phonePattern: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    studentDeletionTimeWindow: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    rulesEnabled: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
   },
