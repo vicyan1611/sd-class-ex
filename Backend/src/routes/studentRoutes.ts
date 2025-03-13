@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import Faculty from "../models/Faculty";
 import Program from "../models/Program";
 import Status from "../models/Status";
+import Configuration from "../models/Configuration";
 const router = express.Router();
 
 // Get all students
@@ -92,8 +93,24 @@ router.delete("/:id", async (req: Request, res: Response) => {
     if (!student) {
       res.status(404).json({ message: "Student not found" });
     } else {
-      await student.destroy();
-      res.json({ message: "Student deleted successfully" });
+      const configData = await Configuration.findAll();
+      if (!configData) {
+        res.status(500).json({ message: "System configuration not found" });
+      }
+
+      const createdAt = new Date(student.createdAt);
+      const currentDate = new Date();
+      const minutesDifference =
+        Math.floor(currentDate.getTime() - createdAt.getTime()) / 60000;
+
+      if (minutesDifference < configData[0].studentDeletionTimeWindow) {
+        res.status(400).json({
+          message: `Student can't be deleted after ${configData[0].studentDeletionTimeWindow} minutes of creation`,
+        });
+      } else {
+        await student.destroy();
+        res.json({ message: "Student deleted successfully" });
+      }
     }
   } catch (error) {
     res.status(400).json({ message: "Error deleting student", error });

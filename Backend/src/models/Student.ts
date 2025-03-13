@@ -16,6 +16,7 @@ interface StudentAttributes {
   email: string;
   phone: string;
   status_id: number;
+  createdAt?: Date;
 }
 
 class Student extends Model<StudentAttributes> implements StudentAttributes {
@@ -31,6 +32,7 @@ class Student extends Model<StudentAttributes> implements StudentAttributes {
   public email!: string;
   public phone!: string;
   public status_id!: number;
+  public createdAt!: Date;
 }
 
 Student.init(
@@ -84,6 +86,9 @@ Student.init(
     status_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
     },
   },
   {

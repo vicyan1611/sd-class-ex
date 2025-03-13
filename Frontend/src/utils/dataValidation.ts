@@ -6,6 +6,7 @@ export const validateData = async (
 ) => {
   if (!data) return false;
   const response = await axiosInstance.get("/configurations");
+  if (!response.data[0].rulesEnabled) return true;
   if (type == "email") {
     const domain = data.substring(data.indexOf("@"));
     console.log(domain, response.data[0].emailDomain);
@@ -24,8 +25,12 @@ export const validateStatusTransition = async (
   from_status_id: number | undefined,
   to_status_id: number | undefined,
 ) => {
-  if (!from_status_id) return false;
+  // if (!from_status_id) return false;
   if (!to_status_id) return false;
+
+  const configResponse = await axiosInstance.get("/configurations");
+  if (!configResponse.data[0].rulesEnabled) return true;
+
   const response = await axiosInstance.get("/status-transitions");
   const transitions = response.data;
   for (let i = 0; i < transitions.length; i++) {

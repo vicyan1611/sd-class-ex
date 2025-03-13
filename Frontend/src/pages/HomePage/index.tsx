@@ -61,10 +61,12 @@ const HomePage = () => {
 
   const handleDelete = async (student: Student) => {
     try {
-      await axiosInstance.delete(`/students/${student.student_id}`);
+      await axiosInstance.delete(`/students/${student.id}`);
       fetchStudents();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      setError(
+        err instanceof Error ? err.response.data.message : "An error occurred",
+      );
     }
   };
 
