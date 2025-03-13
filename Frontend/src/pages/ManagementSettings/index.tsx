@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../../api/config";
 import { Faculty, Program, Status } from "../../types";
-
 const ManagementSettings = () => {
   const [faculties, setFaculties] = useState<Faculty[]>([]);
   const [programs, setPrograms] = useState<Program[]>([]);
@@ -152,6 +151,31 @@ const ManagementSettings = () => {
     }
   };
 
+  const handleDeleteFaculty = async (id: number) => {
+    try {
+      await axiosInstance.delete(`/faculties/${id}`);
+      fetchFaculties();
+    } catch (err) {
+      setError("Failed to delete faculty: " + err?.response?.data.message);
+    }
+  };
+  const handleDeleteProgram = async (id: number) => {
+    try {
+      await axiosInstance.delete(`/programs/${id}`);
+      fetchPrograms();
+    } catch (err) {
+      setError("Failed to delete program: " + err?.response?.data.message);
+    }
+  };
+  const handleDeleteStatus = async (id: number) => {
+    try {
+      await axiosInstance.delete(`/statuses/${id}`);
+      fetchStatuses();
+    } catch (err) {
+      setError("Failed to delete status: " + err?.response?.data.message);
+    }
+  };
+
   return (
     <div className="mx-auto px-4 py-8 w-full">
       <h1 className="text-3xl font-bold mb-6">Management Settings</h1>
@@ -196,12 +220,20 @@ const ManagementSettings = () => {
               ) : (
                 <span>{faculty.faculty_name}</span>
               )}
-              <button
-                className="text-blue-600 hover:text-blue-800"
-                onClick={() => handleEditFaculty(faculty)}
-              >
-                {editingFacultyId === faculty.id ? "Save" : "Edit"}
-              </button>
+              <div>
+                <button
+                  className="text-blue-600 hover:text-blue-800"
+                  onClick={() => handleEditFaculty(faculty)}
+                >
+                  {editingFacultyId === faculty.id ? "Save" : "Edit"}
+                </button>
+                <button
+                  className="text-red-600 hover:text-red-800"
+                  onClick={() => handleDeleteFaculty(faculty.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -241,12 +273,20 @@ const ManagementSettings = () => {
               ) : (
                 <span>{program.program_name}</span>
               )}
-              <button
-                className="text-blue-600 hover:text-blue-800"
-                onClick={() => handleEditProgram(program)}
-              >
-                {editingProgramId === program.id ? "Save" : "Edit"}
-              </button>
+              <div>
+                <button
+                  className="text-blue-600 hover:text-blue-800"
+                  onClick={() => handleEditProgram(program)}
+                >
+                  {editingProgramId === program.id ? "Save" : "Edit"}
+                </button>
+                <button
+                  className="text-red-600 hover:text-red-800"
+                  onClick={() => handleDeleteProgram(program.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -290,12 +330,20 @@ const ManagementSettings = () => {
                   <span>StatusID: {status.id}</span>
                 </div>
               )}
-              <button
-                className="text-blue-600 hover:text-blue-800"
-                onClick={() => handleEditStatus(status)}
-              >
-                {editingStatusId === status.id ? "Save" : "Edit"}
-              </button>
+              <div>
+                <button
+                  className="text-blue-600 hover:text-blue-800"
+                  onClick={() => handleEditStatus(status)}
+                >
+                  {editingStatusId === status.id ? "Save" : "Edit"}
+                </button>
+                <button
+                  className="text-red-600 hover:text-red-800"
+                  onClick={() => handleDeleteStatus(status.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>

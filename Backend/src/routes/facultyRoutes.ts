@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import Faculty from "../models/Faculty";
 import { Op } from "sequelize";
+import Student from "../models/Student";
 
 const router = express.Router();
 
@@ -51,6 +52,28 @@ router.put("/:id", async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(400).json({ message: "Error updating faculty", error });
+  }
+});
+
+router.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const facultyId = req.params.id;
+    const studentCount = await Student.count({
+      where: { faculty_id: facultyId },
+    });
+    if (studentCount > 0) {
+      res.status(400).json({ message: "Cannot delete faculty with students" });
+    } else {
+      const faculty = await Faculty.findByPk(facultyId);
+      if (!faculty) {
+        res.status(404).json({ message: "Faculty not found" });
+      } else {
+        await faculty.destroy();
+        res.json({ message: "Faculty deleted" });
+      }
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting faculty", error });
   }
 });
 

@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import Program from "../models/Program";
+import Student from "../models/Student";
 const router = express.Router();
 
 // Get all programs
@@ -58,15 +59,23 @@ router.put("/:id", async (req: Request, res: Response) => {
 // Delete a program
 router.delete("/:id", async (req: Request, res: Response) => {
   try {
-    const program = await Program.findByPk(req.params.id);
-    if (!program) {
-      res.status(404).json({ message: "Program not found" });
+    const programID = req.params.id;
+    const studentCount = await Student.count({
+      where: { program_id: programID },
+    });
+    if (studentCount > 0) {
+      res.status(400).json({ message: "Cannot delete program with students" });
     } else {
-      await program.destroy();
-      res.json({ message: "Program deleted successfully" });
+      const program = await Program.findByPk(programID);
+      if (!program) {
+        res.status(404).json({ message: "Program not found" });
+      } else {
+        await program.destroy();
+        res.json({ message: "Program deleted" });
+      }
     }
   } catch (error) {
-    res.status(400).json({ message: "Error deleting program", error });
+    res.status(500).json({ message: "Error deleting program", error });
   }
 });
 
